@@ -28,6 +28,11 @@ async function request3() {
   $("body").append(`<br /> The third fact about 4 is ${facts[2]}`);
 }
 
+async function request4(){
+  let card = await axios.get("https://deckofcardsapi.com/api/deck/new/draw/?count=1")
+  
+}
+
 $(document).ready(async function () {
   await request1();
   await request2();
