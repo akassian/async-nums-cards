@@ -1,42 +1,35 @@
 const BASE_URL = "http://numbersapi.com";
 
 async function request1() {
-  let request = await axios.get(`${BASE_URL}/7`);
-  console.log(request);
+  let request = await axios.get(`${BASE_URL}/0?json`);
+  $("body").append(`<br /> ${request.data.text}`);
 }
 
-let data = [];
 async function request2() {
-  // let fact = await Promise.all([
-  //   $.getJSON(`${BASE_URL}/1`),
-  //   $.getJSON(`${BASE_URL}/2`),
-  //   $.getJSON(`${BASE_URL}/3`),
-  // ])
-  //   .then(function (request) {
-  //     console.log(`The first fact is ${fact[0]}`);
-  //   })
-  //   .catch(function (request) {
-  //     console.log("ERROR");
-  //   });
-
-  for (let i = 1; i < 5; i++) {
-    data.push(axios.get(`${BASE_URL}/${i}`));
+  let nums = [1, 2, 3];
+  let request = await axios.get(`${BASE_URL}/${nums[0]},${nums[1]},${nums[2]}`);
+  for (num of nums) {
+    $("body").append(`<br /> ${request.data[num]}`);
   }
+}
 
-  Promise.all(data)
-    .then(function (response) {
-      // console.log(data);
-      response.forEach((num) => console.log(num.data));
-    })
-    .catch((err) => console.log(err));
-
-  // console.log(`The second fact is ${fact[1]}`);
-  // console.log(`The third fact is ${fact[2]}`);
-  // console.log(fact[0].data);
+async function request3() {
+  let facts = await Promise.all([
+    axios.get(`${BASE_URL}/4`),
+    axios.get(`${BASE_URL}/4`),
+    axios.get(`${BASE_URL}/4`),
+  ])
+    .then((data) => data.map((d) => d.data))
+    .catch(function (request) {
+      console.log("ERROR!");
+    });
+  $("body").append(`<br /> The first fact about 4 is ${facts[0]}`);
+  $("body").append(`<br /> The second fact about 4 is ${facts[1]}`);
+  $("body").append(`<br /> The third fact about 4 is ${facts[2]}`);
 }
 
 $(document).ready(async function () {
-  // request1();
+  await request1();
   await request2();
-  // console.log(data);
+  await request3();
 });
